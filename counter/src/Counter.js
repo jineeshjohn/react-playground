@@ -1,21 +1,34 @@
 // import React from 'react';
 
 // class Counter extends React.Component {
-//     state = { count: 0 }
-//     increment = () => this.setState(({ count }) => ({ count: count + 1 }))
-//     render() {
-//         return <button onClick={this.increment}>{this.state.count}</button>
+//     state = {
+//       count: Number(window.localStorage.getItem('count') || 0),
 //     }
-// }
+//     increment = () => this.setState(({count}) => ({count: count + 1}))
+//     componentDidMount() {
+//       window.localStorage.setItem('count', this.state.count)
+//     }
+//     componentDidUpdate(prevProps, prevState) {
+//       if (prevState.count !== this.state.count) {
+//         window.localStorage.setItem('count', this.state.count)
+//       }
+//     }
+//     render() {
+//       return <button onClick={this.increment}>{this.state.count}</button>
+//     }
+//   }
+//   export default Counter;
 
-// export default Counter;
 
-
-// counter.js
-import React , {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 function Counter() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(() =>
+    Number(window.localStorage.getItem('count') || 0),
+  )
   const incrementCount = () => setCount(c => c + 1)
+  useEffect(() => {
+    window.localStorage.setItem('count', count)
+  }, [count])
   return <button onClick={incrementCount}>{count}</button>
 }
 export default Counter
