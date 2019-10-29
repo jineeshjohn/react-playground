@@ -1,34 +1,38 @@
-// import React from 'react';
-
+import React, { useState } from 'react';
 // class Counter extends React.Component {
-//     state = {
-//       count: Number(window.localStorage.getItem('count') || 0),
-//     }
-//     increment = () => this.setState(({count}) => ({count: count + 1}))
-//     componentDidMount() {
-//       window.localStorage.setItem('count', this.state.count)
-//     }
-//     componentDidUpdate(prevProps, prevState) {
-//       if (prevState.count !== this.state.count) {
-//         window.localStorage.setItem('count', this.state.count)
-//       }
-//     }
+//     state = { count: 0 }
+//     increment = () => this.setState(({ count }) => ({ count: count + 1 }))
 //     render() {
-//       return <button onClick={this.increment}>{this.state.count}</button>
+//         return this.props.children({
+//             count: this.state.count,
+//             increment: this.increment,
+//         })
 //     }
-//   }
-//   export default Counter;
+// }
+// Case 2
+
+// function Counter(props) {
+//     const [count, setCount] = useState(0)
+//     const increment = () => setCount(currentCount => currentCount + 1)
+//     return props.children({
+//         count: count,
+//         increment,
+//     })
+// }
 
 
-import React, {useState, useEffect} from 'react'
-function Counter() {
-  const [count, setCount] = useState(() =>
-    Number(window.localStorage.getItem('count') || 0),
-  )
-  const incrementCount = () => setCount(c => c + 1)
-  useEffect(() => {
-    window.localStorage.setItem('count', count)
-  }, [count])
-  return <button onClick={incrementCount}>{count}</button>
+function useCounter() {
+    const [count, setCount] = useState(0)
+    const increment = () => setCount(currentCount => currentCount + 1)
+    return { count, increment }
 }
-export default Counter
+
+// function Counter() {
+//     const { count, increment } = useCounter()
+//     return <button onClick={increment}>{count}</button>
+// }
+const Counter = ({children, ...props}) => children(useCounter(props))
+
+
+
+export default Counter;

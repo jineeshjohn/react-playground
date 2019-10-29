@@ -3,11 +3,13 @@ import ReactDOM from "react-dom";
 import Counter from './Counter';
 import "./styles.css";
 
- 
+
 function App() {
   return (
     <div className="App">
-      <Counter />
+      <Counter>
+        {({ count, increment }) => <button onClick={increment}>{count}</button>}
+      </Counter>
     </div>
   );
 }
