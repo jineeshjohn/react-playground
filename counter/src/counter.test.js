@@ -1,22 +1,12 @@
-import React from 'react'
-import {render, fireEvent} from '@testing-library/react'
-import Counter from './Counter.js'
-function renderCounter(props) {
-  let utils
-  const children = jest.fn(stateAndHelpers => {
-    utils = stateAndHelpers
-    return null
+import { renderHook, act } from '@testing-library/react-hooks'
+import useCounter from './useCounter'
+
+test('should increment counter', () => {
+  const { result } = renderHook(() => useCounter())
+
+  act(() => {
+    result.current.increment()
   })
-  return {
-    ...render(<Counter {...props}>{children}</Counter>),
-    children,
-    // this will give us access to increment and count
-    ...utils,
-  }
-}
-test('counter increments the count', () => {
-  const {children, increment} = renderCounter()
-  expect(children).toHaveBeenCalledWith(expect.objectContaining({count: 0}))
-  increment()
-  expect(children).toHaveBeenCalledWith(expect.objectContaining({count: 1}))
-})
+
+  expect(result.current.count).toBe(1)
+});
